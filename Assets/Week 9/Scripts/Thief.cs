@@ -10,7 +10,7 @@ public class Thief : Villager
 
     protected override void Attack()
     {
-        destination = transform.position;
+        destination = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         base.Attack();
         Instantiate(knifePrefab, spawnPoint1.position, spawnPoint1.rotation);
         Instantiate(knifePrefab, spawnPoint2.position, spawnPoint2.rotation);
