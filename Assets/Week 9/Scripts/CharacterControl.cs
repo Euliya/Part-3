@@ -10,6 +10,7 @@ public class CharacterControl : MonoBehaviour
     public static CharacterControl Instance;
     public Villager[] villager = new Villager[3];
     public TMP_Dropdown dropdown;
+    
 
     private void Start()
     {
@@ -31,8 +32,12 @@ public class CharacterControl : MonoBehaviour
 
     public void DropdownHasChangedValue(int value)
     {
-        SetSelectedVillager(villager[value]);
-        
+        SetSelectedVillager(villager[value]);    
+    }
+
+    public void SliderValueChanged(Single value)
+    {
+        SelectedVillager.transform.localScale = Vector3.one*value;
     }
     //private void Update()
     // {
