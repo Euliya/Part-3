@@ -9,7 +9,7 @@ public class bulletmoving : MonoBehaviour
 {
     Rigidbody2D rb;
     public float speed=1f;
-    Vector2 direction;
+    
     // Start is called before the first frame update
     void Start()
     {

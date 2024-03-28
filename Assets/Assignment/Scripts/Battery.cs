@@ -79,6 +79,6 @@ public class Battery : MonoBehaviour
         else graphic.color = iceColor;
     }
 
-
+    
 
 }
