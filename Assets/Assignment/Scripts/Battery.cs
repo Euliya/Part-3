@@ -12,15 +12,22 @@ public class Battery : MonoBehaviour
     public float waitingTime=5f;
     static Element element;
     public Transform zzTransfrom;
+    public SpriteRenderer zzSr;
     public GameObject ibulletPrefab, fbulletPrefab;
     public Transform bulletPoint;
     Coroutine shooting;
+    Coroutine frozen;
+    bool isfrozen = false;
+    SpriteRenderer sr;
+    
 
     // Start is called before the first frame update
     void Start()
     {
-        setElement(Element.fire);
+        sr=GetComponent<SpriteRenderer>();
 
+        setElement(Element.fire);
+        
         slider.maxValue = waitingTime;
         slider.value = waitingTime * 0.1f;
     }
@@ -28,10 +35,11 @@ public class Battery : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        TakeDamage(GameController.damage);
         if (Input.GetMouseButtonDown(0))
         {
             if(shooting != null) {
-                StopCoroutine(Shoot()); 
+                StopCoroutine(shooting); 
             }
             shooting=StartCoroutine(Shoot());
 
@@ -49,7 +57,7 @@ public class Battery : MonoBehaviour
             }
         }
         //zz point to mouse
-        if (shooting == null)
+        if (shooting == null && !isfrozen)
         {
             Vector3 mousePostion = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector3 direction = (mousePostion - zzTransfrom.position).normalized;
@@ -63,7 +71,7 @@ public class Battery : MonoBehaviour
         slider.value = waitingTime * 0.1f;
         while (slider.value < waitingTime) {
             slider.value+=Time.deltaTime;
-            yield return 0;
+            yield return frozen;
         }
         if(element==Element.ice)
             Instantiate(ibulletPrefab, bulletPoint.position, bulletPoint.rotation);
@@ -79,6 +87,27 @@ public class Battery : MonoBehaviour
         else graphic.color = iceColor;
     }
 
-    
+    void Freeze()//don't change the function name
+    {
+        if(frozen != null)
+        {
+            StopCoroutine(frozen);
+        }
+        frozen=StartCoroutine(Frozen());
+    }
+    IEnumerator Frozen()
+    {
+        isfrozen = true;
+        sr.color = zzSr.color=iceColor;
+        yield return new WaitForSeconds(2);
+        sr.color= zzSr.color = Color.white;
+        isfrozen = false;
+        frozen = null;
+    }
+    void TakeDamage(int d)
+    {
+        if(d>0)Debug.Log("Damn:"+d);
+        GameController.setDamage(0);
+    }
 
 }

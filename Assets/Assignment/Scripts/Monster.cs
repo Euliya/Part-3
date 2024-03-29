@@ -5,23 +5,18 @@ using UnityEngine;
 public class Monster : MonoBehaviour
 {
     float speed = 0.1f;
-    public GameObject firebullPrefab;
-    public Transform Mpoint;
-    Vector3 ptPosition = Vector3.zero;
-    public float waitingTime=1f;
+    
+    protected Vector3 ptPosition = Vector3.zero;
+
     //Transform startPointL;
     //Transform startPointR;
     //public Monster[]monster=new Monster[5];
     //int currentvalue = 0;
 
     // Start is called before the first frame update
-    void Start()
+    protected virtual void Start()
     {
-        Vector3 direction = (ptPosition - Mpoint.position).normalized;
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f;
-        Mpoint.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-
-        StartCoroutine(Shoot());
+        //StartCoroutine(Shoot());
     }
 
     private void FixedUpdate()
@@ -40,16 +35,20 @@ public class Monster : MonoBehaviour
     {
         
         transform.position = Vector3.Lerp(transform.position, ptPosition, speed*Time.deltaTime);
+        if ((ptPosition - transform.position).magnitude < 2)
+        {
+            GameController.setDamage(1+GameController.damage);
+            Destroy(gameObject);
+
+        }
              
     }
-     IEnumerator Shoot()
+
+    public virtual IEnumerator Attack(GameObject target)
     {
-        while (true)
-        {
-            Instantiate(firebullPrefab, Mpoint.position, Mpoint.rotation);
-            yield return new WaitForSeconds(waitingTime);
-        }
+        yield return null;
     }
+
 
 
 }
