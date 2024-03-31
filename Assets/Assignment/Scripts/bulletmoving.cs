@@ -9,7 +9,7 @@ public class bulletmoving : MonoBehaviour
 {
     Rigidbody2D rb;
     public float speed=1f;
-
+    public Element element;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,7 +25,14 @@ public class bulletmoving : MonoBehaviour
      private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player")) GameController.setDamage(1 + GameController.damage);
-        else Destroy(collision.gameObject);
+        else if(collision.TryGetComponent<Monster>(out Monster monster))
+        {
+            if (monster.element != element)
+            {
+                Destroy(collision.gameObject);
+                GameController.monsterCount--;
+            }
+        }
         Destroy(gameObject);
     }
 }

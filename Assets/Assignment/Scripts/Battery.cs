@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-enum Element{fire, ice}
+public enum Element{fire, ice}
 
 public class Battery : MonoBehaviour
 {
@@ -19,7 +20,10 @@ public class Battery : MonoBehaviour
     Coroutine frozen;
     bool isfrozen = false;
     SpriteRenderer sr;
-    
+    int maxHealth=20;
+    int health;
+    public Slider healthBar;
+
 
     // Start is called before the first frame update
     void Start()
@@ -27,7 +31,10 @@ public class Battery : MonoBehaviour
         sr=GetComponent<SpriteRenderer>();
 
         setElement(Element.fire);
-        
+
+        health=maxHealth;
+        healthBar.value=healthBar.maxValue = maxHealth;
+
         slider.maxValue = waitingTime;
         slider.value = waitingTime * 0.1f;
     }
@@ -106,8 +113,18 @@ public class Battery : MonoBehaviour
     }
     void TakeDamage(int d)
     {
-        if(d>0)Debug.Log("Damn:"+d);
+        if (d > 0)
+        {
+            health-=d;
+            healthBar.value=health;
+        }
         GameController.setDamage(0);
+
+        if (health == 0)
+        {
+            SceneManager.LoadScene("dead");
+        }
     }
 
+   
 }

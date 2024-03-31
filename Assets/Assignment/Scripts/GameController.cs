@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
     public GameObject[] monsterPrefabs;
-    static int monsterCount = 0;
+    public static int monsterCount = 0;
     public float spawnRadius=10f;
 
     private void Start()

@@ -1,34 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Monster : MonoBehaviour
 {
     float speed = 0.1f;
-    
+    public Element element;
     protected Vector3 ptPosition = Vector3.zero;
 
-    //Transform startPointL;
-    //Transform startPointR;
-    //public Monster[]monster=new Monster[5];
-    //int currentvalue = 0;
-
-    // Start is called before the first frame update
     protected virtual void Start()
     {
-        //StartCoroutine(Shoot());
-    }
-
-    private void FixedUpdate()
-    {
         
-        //if (currentvalue< monster.Length)
-        //{
-        //    Instantiate(monsterPrefab, startPointL.position, startPointL.rotation);
-        //    currentvalue++;
-        //}
-
-
     }
     // Update is called once per frame
     void Update()
@@ -39,7 +22,7 @@ public class Monster : MonoBehaviour
         {
             GameController.setDamage(1+GameController.damage);
             Destroy(gameObject);
-
+            GameController.monsterCount--;
         }
              
     }
